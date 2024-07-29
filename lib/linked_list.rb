@@ -1,5 +1,5 @@
 class LinkedList
-  class Node
+    class Node
     attr_accessor :value, :next_node
 
     def initialize(_value)
@@ -10,6 +10,7 @@ class LinkedList
 
   def initialize
     @head = nil
+    @size=0
   end
 
   def create_node(value)
@@ -17,31 +18,41 @@ class LinkedList
   end
 
   def append_value(value)
-    new_node = create_node(value)
-
+    current_value=create_node(value)
     if @head.nil?
-      @head = new_node
+      @head=current_value
+      @size+=1
     else
-      current_head_that_holds_a_value = @head
-      while current_head_that_holds_a_value
-        current_head_that_holds_a_value = current_head_that_holds_a_value.next_node
-        unless current_head_that_holds_a_value.nil?
-          current_head_that_holds_a_value = current_head_that_holds_a_value.next_node
-          break
-        end
+      current_head=@head
+      while current_head.next_node
+        current_head=current_head.next_node
       end
-      current_head_that_holds_a_value = create_node(value)
+      current_head.next_node=current_value
+      @size+=1
     end
   end
 
+  def prepend_values(value)
+    new_node=create_node(value)
+    #we move the head node down to the next node mimicking a stack behaviour
+    new_node.next_node = @head
+    @size+=1
+    @head=new_node
+  end
+
+
   def to_s
-    puts 'E goala lista!' if @head.nil?
+    return "Lista goala!" if @head.nil?
     elemente=[]
-    current_node=@head
-    while !current_node.nil?
-      elemente<<current_node.value.to_s
-      current_node=current_node.next_node
+    current_head=@head
+    while current_head
+      elemente<<"(#{current_head.value})"
+      current_head=current_head.next_node
     end
     elemente.join('->')
+  end
+  
+  def size
+    puts @size
   end
 end
